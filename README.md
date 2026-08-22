@@ -1,5 +1,10 @@
 # HAVEN — AI Safety, Reflective Conversation & Journaling Platform
 
+[![Live Deployment](https://img.shields.io/badge/Deployment-Live%20on%20Render-success?style=for-the-badge&logo=render)](https://haven-app-llxr.onrender.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+🌐 **Live Application**: **[https://haven-app-llxr.onrender.com/](https://haven-app-llxr.onrender.com/)**
+
 **Haven** is a calm, privacy-first AI reflection engine and creative journal sanctuary. It is designed to provide a safe, grounded space for examining assumptions, slowing down, exploring competing values, and maintaining personal agency within deterministic safety boundaries.
 
 > **A space to think, notice, and reflect.**  
