@@ -1,0 +1,358 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: conversations
+    description: Reflective conversation operations
+  - name: reflections
+    description: Conversation-derived reflection summaries
+  - name: environment
+    description: User-controlled atmosphere preferences
+  - name: research
+    description: Anonymized research analytics
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /conversations:
+    get:
+      operationId: listConversations
+      tags: [conversations]
+      summary: List recent conversations
+      responses:
+        "200":
+          description: Recent conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Conversation"
+    post:
+      operationId: createConversation
+      tags: [conversations]
+      summary: Create a conversation
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConversationInput"
+      responses:
+        "201":
+          description: Created conversation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversation"
+  /conversations/{conversationId}:
+    get:
+      operationId: getConversation
+      tags: [conversations]
+      summary: Get a conversation and its messages
+      parameters:
+        - $ref: "#/components/parameters/ConversationId"
+      responses:
+        "200":
+          description: Conversation detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConversationDetail"
+        "404":
+          description: Conversation not found
+    delete:
+      operationId: deleteConversation
+      tags: [conversations]
+      summary: Delete a conversation
+      parameters:
+        - $ref: "#/components/parameters/ConversationId"
+      responses:
+        "204":
+          description: Conversation deleted
+        "404":
+          description: Conversation not found
+  /conversations/{conversationId}/messages:
+    post:
+      operationId: sendMessage
+      tags: [conversations]
+      summary: Send a message and receive a safety-aware response
+      parameters:
+        - $ref: "#/components/parameters/ConversationId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageInput"
+      responses:
+        "201":
+          description: User and assistant message result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResult"
+        "503":
+          description: AI provider unavailable
+  /reflections:
+    get:
+      operationId: getReflections
+      tags: [reflections]
+      summary: Get reflective conversation summaries
+      responses:
+        "200":
+          description: Reflection summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reflections"
+  /environment:
+    get:
+      operationId: getEnvironment
+      tags: [environment]
+      summary: Get the user's atmosphere state
+      responses:
+        "200":
+          description: Current atmosphere state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnvironmentState"
+    patch:
+      operationId: updateEnvironment
+      tags: [environment]
+      summary: Update an explicitly approved atmosphere preference
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnvironmentUpdate"
+      responses:
+        "200":
+          description: Updated atmosphere state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnvironmentState"
+  /research/analytics:
+    get:
+      operationId: getResearchAnalytics
+      tags: [research]
+      summary: Get anonymized aggregate analytics
+      responses:
+        "200":
+          description: Research analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResearchAnalytics"
+components:
+  parameters:
+    ConversationId:
+      name: conversationId
+      in: path
+      required: true
+      schema:
+        type: string
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    ConversationInput:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 120
+    Conversation:
+      type: object
+      required: [id, title, createdAt, updatedAt, messageCount]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+        messageCount: { type: number }
+    ConversationDetail:
+      allOf:
+        - $ref: "#/components/schemas/Conversation"
+        - type: object
+          required: [messages]
+          properties:
+            messages:
+              type: array
+              items:
+                $ref: "#/components/schemas/Message"
+    MessageInput:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+          minLength: 1
+          maxLength: 12000
+    Message:
+      type: object
+      required: [id, role, content, createdAt]
+      properties:
+        id: { type: string }
+        role:
+          type: string
+          enum: [user, assistant, system]
+        content: { type: string }
+        createdAt: { type: string }
+        signalLevel: { type: number, minimum: 0, maximum: 4 }
+    SafetySignals:
+      type: object
+      required:
+        - confirmationBias
+        - emotionalDependency
+        - anthropomorphism
+        - delusionReinforcement
+        - escalatingDistress
+        - unsafeAdvice
+        - overValidation
+        - manipulation
+        - hallucinationRisk
+      properties:
+        confirmationBias: { type: number }
+        emotionalDependency: { type: number }
+        anthropomorphism: { type: number }
+        delusionReinforcement: { type: number }
+        escalatingDistress: { type: number }
+        unsafeAdvice: { type: number }
+        overValidation: { type: number }
+        manipulation: { type: number }
+        hallucinationRisk: { type: number }
+    MessageResult:
+      type: object
+      required: [userMessage, assistantMessage, signals, interventionLevel, environmentState]
+      properties:
+        userMessage:
+          $ref: "#/components/schemas/Message"
+        assistantMessage:
+          $ref: "#/components/schemas/Message"
+        signals:
+          $ref: "#/components/schemas/SafetySignals"
+        highestSignal: { type: string }
+        interventionLevel: { type: number, minimum: 0, maximum: 4 }
+        environmentState:
+          $ref: "#/components/schemas/EnvironmentState"
+    Reflections:
+      type: object
+      required: [topics, perspectives, questions, timeline]
+      properties:
+        topics:
+          type: array
+          items: { type: string }
+        perspectives:
+          type: array
+          items: { type: string }
+        questions:
+          type: array
+          items: { type: string }
+        timeline:
+          type: array
+          items:
+            $ref: "#/components/schemas/TimelinePoint"
+    TimelinePoint:
+      type: object
+      required: [label, detail]
+      properties:
+        label: { type: string }
+        detail: { type: string }
+    EnvironmentState:
+      type: object
+      required: [mode, approvedObjects, suggestedObject]
+      properties:
+        mode:
+          type: string
+          enum: [grounding, reflective, depth, growth, complexity]
+        approvedObjects:
+          type: array
+          items: { type: string }
+        suggestedObject:
+          type: [string, "null"]
+    EnvironmentUpdate:
+      type: object
+      required: [objectName, decision]
+      properties:
+        objectName: { type: string }
+        decision:
+          type: string
+          enum: [accepted, rejected]
+    ResearchAnalytics:
+      type: object
+      required: [conversations, signalSeries, interventionSeries, model]
+      properties:
+        conversations:
+          $ref: "#/components/schemas/ConversationAnalytics"
+        signalSeries:
+          type: array
+          items:
+            $ref: "#/components/schemas/SignalPoint"
+        interventionSeries:
+          type: array
+          items:
+            $ref: "#/components/schemas/InterventionPoint"
+        model:
+          $ref: "#/components/schemas/ModelAnalytics"
+    ConversationAnalytics:
+      type: object
+      required: [total, active, messages, averageDuration]
+      properties:
+        total: { type: number }
+        active: { type: number }
+        messages: { type: number }
+        averageDuration: { type: string }
+    SignalPoint:
+      type: object
+      required: [label, confirmationBias, dependency, anthropomorphism, distress]
+      properties:
+        label: { type: string }
+        confirmationBias: { type: number }
+        dependency: { type: number }
+        anthropomorphism: { type: number }
+        distress: { type: number }
+    InterventionPoint:
+      type: object
+      required: [label, level0, level1, level2, level3, level4]
+      properties:
+        label: { type: string }
+        level0: { type: number }
+        level1: { type: number }
+        level2: { type: number }
+        level3: { type: number }
+        level4: { type: number }
+    ModelAnalytics:
+      type: object
+      required: [provider, status, averageLatency, failures]
+      properties:
+        provider: { type: string }
+        status: { type: string }
+        averageLatency: { type: string }
+        failures: { type: number }
+

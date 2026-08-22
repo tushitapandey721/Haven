@@ -1,0 +1,9 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "qcPyEkAPEdep9dabgm8vZ"
+uri = "file://sentinel-ai-complete.zip"
+type = "unspecified"
+title = "sentinel-ai-complete.zip"
+description = "Verified Sentinel AI source package, including the React frontend, Express API, OpenAPI contract, generated clients, docs, environment example, Docker files, and CI configuration."

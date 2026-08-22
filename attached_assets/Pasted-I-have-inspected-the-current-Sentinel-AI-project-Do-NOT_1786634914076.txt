@@ -1,0 +1,408 @@
+I have inspected the current Sentinel AI project.
+
+Do NOT rebuild the frontend from scratch.
+
+The current project is a prototype and I now want you to upgrade it into the actual production-grade architecture described in the original specification.
+
+CRITICAL: Do not claim a feature is implemented unless it actually works.
+
+Current problems that MUST be fixed:
+
+1. Conversations are stored in an in-memory Map.
+2. PostgreSQL/Drizzle exists only as an unused package.
+3. Authentication is missing.
+4. Research endpoints are not protected by researcher/admin roles.
+5. RAG is not implemented.
+6. Redis is not implemented.
+7. Celery/background workers are not implemented.
+8. The safety engine is currently mostly keyword-based.
+9. Research analytics contain synthetic/demo values.
+10. Reflections use simplistic keyword matching.
+11. Environment adaptation uses simplistic keyword matching.
+12. The background animation is still too fast.
+13. The environment should remain abstract, calm and atmospheric.
+14. The chatbot must remain the central product experience.
+
+DO NOT fake any of these features.
+
+Upgrade the existing project incrementally.
+
+PHASE 1 — DATABASE
+
+Replace the in-memory conversation Map with PostgreSQL.
+
+Implement proper Drizzle schemas for:
+
+users
+sessions
+conversations
+messages
+behavioral_signals
+risk_events
+interventions
+user_preferences
+environment_state
+environment_objects
+environment_suggestions
+saved_reflections
+documents
+document_chunks
+embeddings
+model_requests
+audit_logs
+
+Create migrations.
+
+All conversation data must survive server restarts.
+
+PHASE 2 — AUTHENTICATION
+
+Implement:
+
+registration
+login
+logout
+JWT access tokens
+refresh tokens
+password hashing
+protected API routes
+role-based authorization
+
+Roles:
+
+USER
+RESEARCHER
+ADMIN
+
+A user must only access their own conversations.
+
+Research endpoints must require RESEARCHER or ADMIN.
+
+PHASE 3 — REAL SAFETY ENGINE
+
+Keep the existing 9 safety vectors.
+
+But change the architecture to:
+
+USER MESSAGE
++
+RECENT CONVERSATION
++
+CONVERSATION FEATURES
+        ↓
+RULE-BASED SAFETY LAYER
+        +
+SEMANTIC/LLM CLASSIFIER
+        ↓
+SIGNAL AGGREGATION
+        ↓
+BEHAVIORAL SIGNAL RECORD
+
+The rule layer can remain because it provides deterministic safety checks.
+
+However, do not pretend keyword matching alone is sophisticated behavioral analysis.
+
+Store every analysis result in PostgreSQL.
+
+Track signal history over the conversation.
+
+PHASE 4 — INTERVENTION ENGINE
+
+Implement deterministic intervention policy:
+
+0 = normal
+1 = perspective
+2 = grounding
+3 = AI boundary
+4 = safety support
+
+The intervention decision must be backend logic.
+
+The LLM should generate natural language according to that policy.
+
+PHASE 5 — RAG
+
+Actually implement:
+
+documents
+→ parsing
+→ chunking
+→ embeddings
+→ pgvector
+→ similarity search
+→ retrieved context
+→ LLM
+
+Create document ingestion utilities.
+
+Store:
+
+document
+document_chunk
+embedding
+metadata
+source
+
+Only retrieve documents when semantically relevant.
+
+Do not use fake research papers.
+
+PHASE 6 — REDIS + WORKERS
+
+Add Redis.
+
+Add a background worker architecture.
+
+Expensive operations should be asynchronous:
+
+safety analysis
+reflection extraction
+topic clustering
+analytics aggregation
+embedding generation
+
+The user should not wait unnecessarily for these tasks.
+
+PHASE 7 — REAL REFLECTION ENGINE
+
+Replace keyword-only reflection detection.
+
+Implement:
+
+conversation
+→ topic extraction
+→ semantic grouping
+→ recurring topic detection
+→ recurring questions
+→ perspectives explored
+
+Store results.
+
+Do not infer diagnoses or psychological conditions.
+
+Use language like:
+
+"You explored..."
+
+not:
+
+"You are..."
+
+PHASE 8 — REAL ANALYTICS
+
+Remove all fabricated analytics.
+
+NEVER return fake values like:
+
+"12m 40s"
+
+unless the database actually contains that measurement.
+
+If insufficient data exists:
+
+"Insufficient data"
+
+Show real:
+
+conversation count
+message count
+signal frequency
+intervention count
+model latency
+model failures
+sessions
+trends
+
+PHASE 9 — ENVIRONMENT ENGINE
+
+Replace keyword-only environment detection.
+
+Use semantic conversation analysis.
+
+Possible atmospheric states:
+
+grounding
+reflective
+depth
+growth
+complexity
+
+The visual changes must be subtle.
+
+Do NOT manually map:
+
+sad = red
+happy = yellow
+angry = red
+
+Do not manipulate the environment based on inferred psychological states.
+
+The atmosphere should reflect broad conversational tone, not diagnose emotions.
+
+PHASE 10 — VISUAL EXPERIENCE
+
+Keep the current abstract direction.
+
+Do NOT turn it into a house.
+
+Do NOT create a futuristic AI dashboard.
+
+The experience should feel:
+
+abstract
+calm
+private
+warm
+immersive
+slow
+
+The chatbot remains the main hook.
+
+Make ambient animation 30–60 seconds or slower.
+
+Use multiple layers with different extremely slow movement.
+
+Support prefers-reduced-motion.
+
+PHASE 11 — CHAT
+
+The chatbot must remain capable of arbitrary conversation.
+
+Test:
+
+Hi
+
+What's the capital of Japan?
+
+My name is Tushita.
+
+What did I tell you my name was?
+
+I'm confused about my career.
+
+Tell me a joke.
+
+You are the only one who understands me.
+
+Everyone is secretly communicating through my television.
+
+The chatbot must respond naturally.
+
+No hardcoded conversation.
+
+PHASE 12 — RESEARCHER DASHBOARD
+
+Make it genuinely role-protected.
+
+Show only aggregate/anonymized information.
+
+No private conversation text.
+
+Include:
+
+conversation volume
+message volume
+signal trends
+intervention levels
+model latency
+failure rate
+safety signal distribution
+
+PHASE 13 — TESTING
+
+Create automated tests for:
+
+authentication
+authorization
+database persistence
+conversation memory
+chat API
+safety engine
+intervention engine
+RAG retrieval
+environment state
+research authorization
+
+Also create AI safety evaluation cases.
+
+PHASE 14 — DOCKER
+
+Ensure the complete stack runs with:
+
+frontend
+backend
+postgres
+redis
+worker
+
+Document environment variables.
+
+PHASE 15 — FINAL VERIFICATION
+
+Actually run:
+
+typecheck
+frontend build
+backend build
+tests
+database migrations
+
+Fix every error.
+
+Do not simply tell me that something should work.
+
+Verify it.
+
+PHASE 16 — PACKAGE
+
+Finally create:
+
+sentinel-ai-complete.zip
+
+The ZIP must contain the complete verified project.
+
+Exclude:
+
+node_modules
+.venv
+dist
+build
+__pycache__
+.env
+.git
+
+Include:
+
+.env.example
+
+NEVER include real API keys.
+
+Before declaring completion, verify that the ZIP exists and can be extracted successfully.
+
+IMPORTANT:
+
+Do not remove the existing good visual design unnecessarily.
+
+Upgrade the architecture underneath it.
+
+The goal is:
+
+beautiful frontend
++
+real AI
++
+real persistence
++
+real safety analysis
++
+real RAG
++
+real authentication
++
+real asynchronous processing
++
+real analytics
++
+production-quality architecture.
+
+Start by inspecting the existing project and implementing PHASE 1.
