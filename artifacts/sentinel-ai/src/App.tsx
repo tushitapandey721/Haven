@@ -706,12 +706,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-const ShellContext = createContext<{ openMobileNav: () => void }>({ openMobileNav: () => {} });
-export const useShell = () => useContext(ShellContext);
-
 function Shell({ children }: { children: ReactNode }) {
   const [location] = useLocation();
-  const [mobileNav, setMobileNav] = useState(false);
   const { user, logout, setShowAuthModal, setAuthMode, setShowHowItWorks } = useAuth();
 
   const nav = [
@@ -721,167 +717,144 @@ function Shell({ children }: { children: ReactNode }) {
   ];
 
   return (
-    <ShellContext.Provider value={{ openMobileNav: () => setMobileNav(true) }}>
-      <div className="haven-noise min-h-[100dvh] bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
-        {/* Desktop / Mobile Slide-Over Sidebar */}
-        <aside className={`fixed inset-y-0 left-0 z-50 flex w-[268px] max-w-[85vw] flex-col bg-[hsl(var(--sidebar))] px-5 py-6 text-[hsl(var(--sidebar-foreground))] transition-transform duration-300 md:translate-x-0 ${mobileNav ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}`}>
-          <div className="flex items-center gap-3 px-2">
-            <HavenMark size={30} />
-            <div>
-              <div className="font-display text-xl">haven</div>
-              <div className="font-mono-custom text-[9px] uppercase tracking-[.2em] text-[hsl(var(--sidebar-foreground)/.5)]">private inquiry</div>
-            </div>
-            <button className="ml-auto rounded-lg p-1.5 text-[hsl(var(--sidebar-foreground)/.7)] hover:bg-[hsl(var(--sidebar-accent))] md:hidden" onClick={() => setMobileNav(false)} data-testid="button-close-navigation">
-              <X size={18} />
-            </button>
+    <div className="haven-noise min-h-[100dvh] bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex fixed inset-y-0 left-0 z-50 w-[268px] flex-col bg-[hsl(var(--sidebar))] px-5 py-6 text-[hsl(var(--sidebar-foreground))]">
+        <div className="flex items-center gap-3 px-2">
+          <HavenMark size={30} />
+          <div>
+            <div className="font-display text-xl">haven</div>
+            <div className="font-mono-custom text-[9px] uppercase tracking-[.2em] text-[hsl(var(--sidebar-foreground)/.5)]">private inquiry</div>
           </div>
+        </div>
 
-          <div className="mt-8 px-2 font-mono-custom text-[9px] uppercase tracking-[.18em] text-[hsl(var(--sidebar-foreground)/.4)]">Your space</div>
-          <nav className="mt-3 space-y-1" aria-label="Primary navigation">
-            {nav.map(({ href, label, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setMobileNav(false)}
-                className={`flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm transition-colors ${location === href ? 'bg-[hsl(var(--sidebar-accent))] text-[hsl(var(--sidebar-foreground))] font-medium' : 'text-[hsl(var(--sidebar-foreground)/.65)] hover:bg-[hsl(var(--sidebar-accent)/.65)] hover:text-[hsl(var(--sidebar-foreground))]'}`}
-                data-testid={`link-${label.toLowerCase().replace(' ', '-')}`}
-              >
-                <Icon size={16} strokeWidth={1.6} />
-                <span>{label}</span>
-                {location === href && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[hsl(var(--sidebar-primary))]" />}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="mt-4 space-y-1 border-t border-[hsl(var(--sidebar-border))] pt-4">
-            <button
-              onClick={() => {
-                setMobileNav(false);
-                setShowHowItWorks(true);
-              }}
-              className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs text-[hsl(var(--sidebar-foreground)/.65)] transition-colors hover:bg-[hsl(var(--sidebar-accent)/.6)] hover:text-[hsl(var(--sidebar-foreground))]"
-              data-testid="button-how-haven-works"
-            >
-              <BookOpen size={15} />
-              <span>How Haven works</span>
-            </button>
+        <div className="mt-8 px-2 font-mono-custom text-[9px] uppercase tracking-[.18em] text-[hsl(var(--sidebar-foreground)/.4)]">Your space</div>
+        <nav className="mt-3 space-y-1" aria-label="Primary navigation">
+          {nav.map(({ href, label, icon: Icon }) => (
             <Link
-              href="/research"
-              onClick={() => setMobileNav(false)}
-              className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs text-[hsl(var(--sidebar-foreground)/.65)] transition-colors hover:bg-[hsl(var(--sidebar-accent)/.6)] hover:text-[hsl(var(--sidebar-foreground))]"
-              data-testid="link-research"
+              key={href}
+              href={href}
+              className={`flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm transition-colors ${location === href ? 'bg-[hsl(var(--sidebar-accent))] text-[hsl(var(--sidebar-foreground))] font-medium' : 'text-[hsl(var(--sidebar-foreground)/.65)] hover:bg-[hsl(var(--sidebar-accent)/.65)] hover:text-[hsl(var(--sidebar-foreground))]'}`}
+              data-testid={`link-${label.toLowerCase().replace(' ', '-')}`}
             >
-              <BarChart3 size={15} />
-              <span>Research telemetry</span>
+              <Icon size={16} strokeWidth={1.6} />
+              <span>{label}</span>
+              {location === href && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[hsl(var(--sidebar-primary))]" />}
             </Link>
-          </div>
+          ))}
+        </nav>
 
-          {/* User Profile Footer */}
-          <div className="mt-auto border-t border-[hsl(var(--sidebar-border))] pt-4">
-            {user ? (
-              <div className="rounded-xl bg-[hsl(var(--sidebar-accent)/.5)] p-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[hsl(var(--sidebar-primary)/.2)] text-[hsl(var(--sidebar-primary))] font-mono-custom text-xs font-bold">
-                    {user.email.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-xs font-medium">{user.email}</div>
-                    <div className="font-mono-custom text-[9px] text-[hsl(var(--sidebar-foreground)/.4)]">Private Profile</div>
-                  </div>
-                  <button
-                    onClick={logout}
-                    title="Sign out"
-                    className="rounded p-1 text-[hsl(var(--sidebar-foreground)/.5)] hover:text-[hsl(var(--destructive))]"
-                    data-testid="button-logout"
-                  >
-                    <LogOut size={14} />
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="rounded-xl border border-dashed border-[hsl(var(--sidebar-border))] p-3 text-center">
-                <div className="text-xs text-[hsl(var(--sidebar-foreground)/.7)]">Exploring in Guest Mode</div>
-                <div className="mt-2.5 flex gap-2">
-                  <button
-                    onClick={() => { setMobileNav(false); setAuthMode('login'); setShowAuthModal(true); }}
-                    className="flex-1 rounded-lg bg-[hsl(var(--sidebar-primary))] py-1.5 text-[11px] font-semibold text-[hsl(var(--sidebar-primary-foreground))]"
-                    data-testid="button-sidebar-login"
-                  >
-                    Sign In
-                  </button>
-                  <button
-                    onClick={() => { setMobileNav(false); setAuthMode('register'); setShowAuthModal(true); }}
-                    className="flex-1 rounded-lg border border-[hsl(var(--sidebar-border))] py-1.5 text-[11px] text-[hsl(var(--sidebar-foreground)/.8)]"
-                    data-testid="button-sidebar-register"
-                  >
-                    Sign Up
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </aside>
-
-        {/* Backdrop for mobile drawer */}
-        {mobileNav && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
-            onClick={() => setMobileNav(false)}
-            aria-label="Close navigation"
-            data-testid="button-navigation-backdrop"
-          />
-        )}
-
-        {/* Main Content Area */}
-        <main className="min-h-[100dvh] pb-16 md:pb-0 md:pl-[268px]">
-          {children}
-        </main>
-
-        {/* Mobile Bottom Navigation Bar */}
-        <nav
-          aria-label="Mobile bottom navigation"
-          className="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-around border-t border-[hsl(var(--border)/.8)] bg-[hsl(var(--card)/.96)] px-2 py-2 shadow-lg backdrop-blur-xl safe-bottom md:hidden"
-        >
-          {nav.map(({ href, label, icon: Icon }) => {
-            const isActive = location === href;
-            return (
-              <Link
-                key={href}
-                href={href}
-                className={`flex flex-col items-center justify-center gap-0.5 rounded-xl px-4 py-1.5 text-[11px] transition-colors ${
-                  isActive
-                    ? 'text-[hsl(var(--primary))] font-semibold'
-                    : 'text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]'
-                }`}
-                data-testid={`mobile-nav-${label.toLowerCase().replace(' ', '-')}`}
-              >
-                <div className="relative">
-                  <Icon size={18} strokeWidth={isActive ? 2.2 : 1.7} />
-                  {isActive && (
-                    <motion.span
-                      layoutId="mobileNavActiveDot"
-                      className="absolute -bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[hsl(var(--primary))]"
-                    />
-                  )}
-                </div>
-                <span className="text-[10px] tracking-tight">{label}</span>
-              </Link>
-            );
-          })}
+        <div className="mt-4 space-y-1 border-t border-[hsl(var(--sidebar-border))] pt-4">
           <button
             onClick={() => setShowHowItWorks(true)}
-            className="flex flex-col items-center justify-center gap-0.5 rounded-xl px-3 py-1.5 text-[10px] text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
-            data-testid="mobile-nav-about"
+            className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs text-[hsl(var(--sidebar-foreground)/.65)] transition-colors hover:bg-[hsl(var(--sidebar-accent)/.6)] hover:text-[hsl(var(--sidebar-foreground))]"
+            data-testid="button-how-haven-works"
           >
-            <HelpCircle size={18} strokeWidth={1.7} />
-            <span className="tracking-tight">About</span>
+            <BookOpen size={15} />
+            <span>How Haven works</span>
           </button>
-        </nav>
-      </div>
-    </ShellContext.Provider>
+          <Link
+            href="/research"
+            className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs text-[hsl(var(--sidebar-foreground)/.65)] transition-colors hover:bg-[hsl(var(--sidebar-accent)/.6)] hover:text-[hsl(var(--sidebar-foreground))]"
+            data-testid="link-research"
+          >
+            <BarChart3 size={15} />
+            <span>Research telemetry</span>
+          </Link>
+        </div>
+
+        {/* User Profile Footer */}
+        <div className="mt-auto border-t border-[hsl(var(--sidebar-border))] pt-4">
+          {user ? (
+            <div className="rounded-xl bg-[hsl(var(--sidebar-accent)/.5)] p-3">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[hsl(var(--sidebar-primary)/.2)] text-[hsl(var(--sidebar-primary))] font-mono-custom text-xs font-bold">
+                  {user.email.charAt(0).toUpperCase()}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-xs font-medium">{user.email}</div>
+                  <div className="font-mono-custom text-[9px] text-[hsl(var(--sidebar-foreground)/.4)]">Private Profile</div>
+                </div>
+                <button
+                  onClick={logout}
+                  title="Sign out"
+                  className="rounded p-1 text-[hsl(var(--sidebar-foreground)/.5)] hover:text-[hsl(var(--destructive))]"
+                  data-testid="button-logout"
+                >
+                  <LogOut size={14} />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="rounded-xl border border-dashed border-[hsl(var(--sidebar-border))] p-3 text-center">
+              <div className="text-xs text-[hsl(var(--sidebar-foreground)/.7)]">Exploring in Guest Mode</div>
+              <div className="mt-2.5 flex gap-2">
+                <button
+                  onClick={() => { setAuthMode('login'); setShowAuthModal(true); }}
+                  className="flex-1 rounded-lg bg-[hsl(var(--sidebar-primary))] py-1.5 text-[11px] font-semibold text-[hsl(var(--sidebar-primary-foreground))]"
+                  data-testid="button-sidebar-login"
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => { setAuthMode('register'); setShowAuthModal(true); }}
+                  className="flex-1 rounded-lg border border-[hsl(var(--sidebar-border))] py-1.5 text-[11px] text-[hsl(var(--sidebar-foreground)/.8)]"
+                  data-testid="button-sidebar-register"
+                >
+                  Sign Up
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <main className="min-h-[100dvh] pb-16 md:pb-0 md:pl-[268px]">
+        {children}
+      </main>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <nav
+        aria-label="Mobile bottom navigation"
+        className="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-around border-t border-[hsl(var(--border)/.8)] bg-[hsl(var(--card)/.96)] px-2 py-2 shadow-lg backdrop-blur-xl safe-bottom md:hidden"
+      >
+        {nav.map(({ href, label, icon: Icon }) => {
+          const isActive = location === href;
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={`flex flex-col items-center justify-center gap-0.5 rounded-xl px-4 py-1.5 text-[11px] transition-colors ${
+                isActive
+                  ? 'text-[hsl(var(--primary))] font-semibold'
+                  : 'text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]'
+              }`}
+              data-testid={`mobile-nav-${label.toLowerCase().replace(' ', '-')}`}
+            >
+              <div className="relative">
+                <Icon size={18} strokeWidth={isActive ? 2.2 : 1.7} />
+                {isActive && (
+                  <motion.span
+                    layoutId="mobileNavActiveDot"
+                    className="absolute -bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[hsl(var(--primary))]"
+                  />
+                )}
+              </div>
+              <span className="text-[10px] tracking-tight">{label}</span>
+            </Link>
+          );
+        })}
+        <button
+          onClick={() => setShowHowItWorks(true)}
+          className="flex flex-col items-center justify-center gap-0.5 rounded-xl px-3 py-1.5 text-[10px] text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
+          data-testid="mobile-nav-about"
+        >
+          <HelpCircle size={18} strokeWidth={1.7} />
+          <span className="tracking-tight">About</span>
+        </button>
+      </nav>
+    </div>
   );
 }
 
@@ -1055,7 +1028,6 @@ function SpacePage() {
   const [selectedReasoning, setSelectedReasoning] = useState<any | null>(null);
   const [copiedToast, setCopiedToast] = useState(false);
 
-  const { openMobileNav } = useShell();
   const { generated: generatedAffirmation } = useAffirmationAtmosphere();
   const queryClientInstance = useQueryClient();
   const messageListRef = useRef<HTMLDivElement>(null);
@@ -1305,17 +1277,9 @@ function SpacePage() {
         <div className="pointer-events-none absolute right-[-12%] top-[-6%] h-[420px] w-[420px] rounded-full bg-[hsl(var(--accent)/.12)] blur-3xl animate-drift" />
         <div className="pointer-events-none absolute bottom-[-14%] left-[30%] h-[380px] w-[380px] rounded-full bg-[hsl(var(--primary)/.08)] blur-3xl animate-drift" style={{ animationDelay: '-8s' }} />
 
-        {/* Responsive Header matching JournalPage */}
+        {/* Responsive Header */}
         <header className="relative z-20 flex items-center justify-between border-b border-[hsl(var(--border)/.75)] px-3 sm:px-6 md:px-10 py-3 sm:py-3.5">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 pr-2">
-            <button
-              onClick={openMobileNav}
-              className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.9)] text-[hsl(var(--foreground))] shadow-sm transition-transform active:scale-95 md:hidden"
-              aria-label="Open menu"
-              data-testid="button-open-navigation"
-            >
-              <Menu size={16} />
-            </button>
             <span className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-2xl bg-[hsl(var(--primary)/.12)] text-[hsl(var(--primary))] shadow-sm">
               <MessageCircle size={17} />
             </span>
@@ -1837,7 +1801,6 @@ function ReflectionsPage() {
   const data = reflections.data;
   const env = environment.data;
   const [copied, setCopied] = useState(false);
-  const { openMobileNav } = useShell();
 
   const handleExportArchive = () => {
     if (!data) return;
@@ -1868,14 +1831,6 @@ function ReflectionsPage() {
         {/* Top Header Bar matching JournalPage & SpacePage */}
         <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 border-b border-[hsl(var(--border))] pb-4 sm:pb-6">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-            <button
-              onClick={openMobileNav}
-              className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.9)] text-[hsl(var(--foreground))] shadow-sm transition-transform active:scale-95 md:hidden"
-              aria-label="Open menu"
-              data-testid="button-open-navigation-reflections"
-            >
-              <Menu size={16} />
-            </button>
             <span className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-2xl bg-[hsl(var(--primary)/.12)] text-[hsl(var(--primary))] shadow-sm">
               <Leaf size={18} />
             </span>
@@ -2095,7 +2050,6 @@ interface JournalEntryState {
 }
 
 function JournalPage() {
-  const { openMobileNav } = useShell();
   const [entries, setEntries] = useState<JournalEntryState[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -2409,14 +2363,6 @@ function JournalPage() {
         {/* Header */}
         <div className="mx-auto flex max-w-[1360px] flex-wrap items-center justify-between gap-3 sm:gap-4 border-b border-[hsl(var(--border))] pb-4 sm:pb-6">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-            <button
-              onClick={openMobileNav}
-              className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.9)] text-[hsl(var(--foreground))] shadow-sm transition-transform active:scale-95 md:hidden"
-              aria-label="Open menu"
-              data-testid="button-open-navigation-journal"
-            >
-              <Menu size={16} />
-            </button>
             <span className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-2xl bg-[hsl(var(--primary)/.12)] text-[hsl(var(--primary))] shadow-sm">
               <BookOpen size={18} />
             </span>
