@@ -312,8 +312,8 @@ function AuthModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 sm:p-4 backdrop-blur-md animate-appear">
-      <div className="relative w-full max-w-md max-h-[92dvh] overflow-y-auto rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.98)] p-5 sm:p-7 md:p-8 shadow-2xl backdrop-blur-2xl">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 p-3 sm:p-4 backdrop-blur-md flex min-h-full items-start sm:items-center justify-center py-6 sm:py-8 safe-top safe-bottom animate-appear">
+      <div className="relative w-full max-w-md my-auto max-h-[88vh] overflow-y-auto rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.98)] p-5 sm:p-7 md:p-8 shadow-2xl backdrop-blur-2xl">
         <button
           onClick={() => setShowAuthModal(false)}
           className="absolute right-4 top-4 sm:right-5 sm:top-5 rounded-full p-2 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--elevate-1))] hover:text-[hsl(var(--foreground))]"
@@ -442,8 +442,8 @@ function HowHavenWorksModal() {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 sm:p-4 backdrop-blur-md animate-appear">
-      <div className="relative w-full max-w-2xl max-h-[90dvh] overflow-y-auto rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.98)] p-5 sm:p-7 md:p-9 shadow-2xl backdrop-blur-2xl">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 p-3 sm:p-4 backdrop-blur-md flex min-h-full items-start sm:items-center justify-center py-6 sm:py-8 safe-top safe-bottom animate-appear">
+      <div className="relative w-full max-w-2xl my-auto max-h-[85vh] sm:max-h-[90vh] overflow-y-auto rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.98)] p-5 sm:p-7 md:p-9 shadow-2xl backdrop-blur-2xl">
         <button
           onClick={() => setShowHowItWorks(false)}
           className="absolute right-4 top-4 sm:right-5 sm:top-5 rounded-full p-2 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--elevate-1))] hover:text-[hsl(var(--foreground))]"
@@ -517,8 +517,8 @@ function InspectReasoningModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 sm:p-4 backdrop-blur-sm animate-appear">
-      <div className="relative w-full max-w-lg max-h-[90dvh] overflow-y-auto rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.98)] p-5 sm:p-6 shadow-2xl backdrop-blur-xl">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 p-3 sm:p-4 backdrop-blur-sm flex min-h-full items-start sm:items-center justify-center py-6 sm:py-8 safe-top safe-bottom animate-appear">
+      <div className="relative w-full max-w-lg my-auto max-h-[85vh] sm:max-h-[90vh] overflow-y-auto rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.98)] p-5 sm:p-6 shadow-2xl backdrop-blur-xl">
         <button
           onClick={onClose}
           className="absolute right-4 top-4 rounded-full p-1.5 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--elevate-1))] hover:text-[hsl(var(--foreground))]"
@@ -1305,9 +1305,9 @@ function SpacePage() {
         <div className="pointer-events-none absolute right-[-12%] top-[-6%] h-[420px] w-[420px] rounded-full bg-[hsl(var(--accent)/.12)] blur-3xl animate-drift" />
         <div className="pointer-events-none absolute bottom-[-14%] left-[30%] h-[380px] w-[380px] rounded-full bg-[hsl(var(--primary)/.08)] blur-3xl animate-drift" style={{ animationDelay: '-8s' }} />
 
-        {/* Responsive Header with Integrated Non-Colliding Hamburger */}
-        <header className="relative z-20 flex items-center justify-between border-b border-[hsl(var(--border)/.75)] px-3 py-2.5 sm:px-6 md:px-10">
-          <div className="flex items-center gap-2.5 min-w-0 pr-2">
+        {/* Responsive Header matching JournalPage */}
+        <header className="relative z-20 flex items-center justify-between border-b border-[hsl(var(--border)/.75)] px-3 sm:px-6 md:px-10 py-3 sm:py-3.5">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 pr-2">
             <button
               onClick={openMobileNav}
               className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.9)] text-[hsl(var(--foreground))] shadow-sm transition-transform active:scale-95 md:hidden"
@@ -1316,10 +1316,13 @@ function SpacePage() {
             >
               <Menu size={16} />
             </button>
+            <span className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-2xl bg-[hsl(var(--primary)/.12)] text-[hsl(var(--primary))] shadow-sm">
+              <MessageCircle size={17} />
+            </span>
             <div className="min-w-0">
-              <div className="font-mono-custom text-[9px] uppercase tracking-[.22em] text-[hsl(var(--muted-foreground))] truncate">Your private space</div>
-              <div className="mt-0.5 flex items-center gap-1.5 text-xs sm:text-sm text-[hsl(var(--foreground)/.72)] truncate">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[hsl(var(--primary))]" /> {modeLabel(env?.mode)} atmosphere
+              <div className="font-mono-custom text-[9px] uppercase tracking-[.2em] text-[hsl(var(--muted-foreground))] truncate">Haven / Space</div>
+              <div className="flex items-center gap-1.5 font-display text-sm sm:text-lg text-[hsl(var(--foreground))] truncate">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[hsl(var(--primary))]" /> {modeLabel(env?.mode)} Atmosphere
               </div>
             </div>
           </div>
@@ -1328,12 +1331,12 @@ function SpacePage() {
             {/* Mobile Conversations Drawer Trigger */}
             <button
               onClick={() => setMobileSessionsOpen(true)}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card)/.72)] px-2.5 py-1 text-[10px] text-[hsl(var(--muted-foreground))] shadow-sm backdrop-blur transition-colors hover:text-[hsl(var(--foreground))] lg:hidden"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card)/.72)] px-2.5 py-1 text-[10px] text-[hsl(var(--foreground))] shadow-sm backdrop-blur transition-colors hover:text-[hsl(var(--foreground))] lg:hidden"
               data-testid="button-mobile-conversations"
               title="View all conversations"
             >
               <MessageCircle size={12} />
-              <span>Inquiries ({list.length})</span>
+              <span className="font-mono-custom font-semibold">({list.length})</span>
             </button>
 
             {detail.data?.messages && detail.data.messages.length > 0 && (
@@ -1861,37 +1864,43 @@ function ReflectionsPage() {
 
   return (
     <Shell>
-      <div className="mx-auto max-w-[1180px] px-4 sm:px-6 md:px-12 py-6 sm:py-10 md:py-16">
-        <div className="flex flex-wrap items-end justify-between gap-4 sm:gap-6 border-b border-[hsl(var(--border))] pb-6 sm:pb-9">
-          <div className="flex items-start gap-3 min-w-0">
+      <div className="mx-auto max-w-[1180px] px-3 sm:px-6 md:px-12 py-5 sm:py-6 md:py-8">
+        {/* Top Header Bar matching JournalPage & SpacePage */}
+        <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 border-b border-[hsl(var(--border))] pb-4 sm:pb-6">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
             <button
               onClick={openMobileNav}
-              className="mt-1 flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.9)] text-[hsl(var(--foreground))] shadow-sm transition-transform active:scale-95 md:hidden"
+              className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.9)] text-[hsl(var(--foreground))] shadow-sm transition-transform active:scale-95 md:hidden"
               aria-label="Open menu"
               data-testid="button-open-navigation-reflections"
             >
               <Menu size={16} />
             </button>
-            <div>
-              <div className="font-mono-custom text-[10px] uppercase tracking-[.2em] text-[hsl(var(--primary))]">A longer view</div>
-              <h1 className="mt-2 sm:mt-3 font-display text-4xl sm:text-5xl md:text-7xl leading-none">Reflections</h1>
-              <p className="mt-3 sm:mt-5 max-w-md text-xs sm:text-sm leading-6 text-[hsl(var(--muted-foreground))]">What returns is not always a pattern. Sometimes it is simply a question that stayed open.</p>
+            <span className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-2xl bg-[hsl(var(--primary)/.12)] text-[hsl(var(--primary))] shadow-sm">
+              <Leaf size={18} />
+            </span>
+            <div className="min-w-0">
+              <div className="font-mono-custom text-[9px] sm:text-[10px] uppercase tracking-[.2em] text-[hsl(var(--muted-foreground))] truncate">Haven / Long View</div>
+              <h1 className="font-display text-lg sm:text-2xl md:text-3xl text-[hsl(var(--foreground))] truncate">Reflections</h1>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-2.5 shrink-0">
             <button
               onClick={handleExportArchive}
-              className="inline-flex items-center gap-2 rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card)/.7)] px-3.5 sm:px-4 py-2 text-xs font-semibold text-[hsl(var(--foreground))] shadow-sm backdrop-blur hover:border-[hsl(var(--primary)/.4)] transition-transform active:scale-95"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card)/.8)] px-3 py-1.5 text-xs font-semibold text-[hsl(var(--foreground))] shadow-sm backdrop-blur hover:border-[hsl(var(--primary)/.4)] transition-transform active:scale-95"
               data-testid="button-export-reflections-archive"
             >
-              {copied ? <Check size={14} className="text-[hsl(var(--primary))]" /> : <Download size={14} />}
-              <span>{copied ? 'Copied & Downloaded' : 'Export Archive (.md)'}</span>
+              {copied ? <Check size={13} className="text-[hsl(var(--primary))]" /> : <Download size={13} />}
+              <span className="hidden sm:inline">{copied ? 'Copied' : 'Export Archive (.md)'}</span>
+              <span className="sm:hidden">Export (.md)</span>
             </button>
-            <div className="flex items-center gap-1.5 font-mono-custom text-[9px] sm:text-[10px] uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]">
-              <Clock3 size={13} /> archive
-            </div>
           </div>
         </div>
+
+        {/* Subtitle description */}
+        <p className="mt-3 text-xs sm:text-sm leading-5 sm:leading-6 text-[hsl(var(--muted-foreground))] max-w-2xl">
+          What returns is not always a pattern. Sometimes it is simply a question that stayed open.
+        </p>
 
         {reflections.isLoading ? (
           <div className="grid gap-4 sm:gap-5 py-8 sm:py-12 md:grid-cols-3">
