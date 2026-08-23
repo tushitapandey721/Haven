@@ -205,20 +205,25 @@
   background-image: linear-gradient(rgba(33, 60, 66, .045) 1px, transparent 1px), linear-gradient(90deg, rgba(33, 60, 66, .045) 1px, transparent 1px);
   background-size: 36px 36px;
 }
-body:has(button[data-testid="button-affirmation-menu"][aria-expanded="true"]) [data-testid="button-toggle-conversations"] {
-  opacity: 0;
-  pointer-events: none;
-}
-body:has(button[data-testid="button-affirmation-menu"][aria-expanded="true"]) .haven-chat-viewport {
-  padding-top: 200px;
-}
-main > div.relative.flex > header > div:last-child > div:first-child {
-  display: none;
-}
 main > div.relative.flex {
   background-image: var(--affirmation-background, none);
   background-size: cover;
 }
+
+/* Touch & Mobile Utilities */
+.safe-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+.safe-top {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+.touch-pan-y {
+  touch-action: pan-y;
+}
+.touch-none {
+  touch-action: none;
+}
+
 @media (min-width: 1024px) {
   main > div.relative.flex > div.relative.z-10 {
     height: 100%;
