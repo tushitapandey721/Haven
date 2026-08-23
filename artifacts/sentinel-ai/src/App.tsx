@@ -19,6 +19,13 @@ import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
+import HomePage from '@/pages/HomePage';
+import AboutPage from '@/pages/AboutPage';
+import ReflectionsPageComponent from '@/pages/ReflectionsPage';
+import {
+  QuillIcon, BoundariesIcon, PrivacyIcon, HumilityIcon, AgencyIcon,
+  WashiTape, WaxStampButton
+} from '@/components/tactile-ui';
 
 if (typeof window !== 'undefined') {
   setAuthTokenGetter(() => localStorage.getItem('haven_token'));
@@ -420,71 +427,73 @@ function HowHavenWorksModal() {
 
   const commitments = [
     {
-      icon: Eye,
-      title: 'No Sycophancy / Epistemic Mirror',
+      icon: HumilityIcon,
+      title: 'Epistemic Mirror & Humility',
       summary: 'Haven refuses to blindly agree or flatter. It gently reflects your line of reasoning so you can inspect where assumptions begin.',
     },
     {
-      icon: Shield,
-      title: 'Non-Clinical & Transparent',
+      icon: BoundariesIcon,
+      title: 'Deterministic Boundaries',
       summary: 'Haven is an AI reflection tool, not a human friend, therapist, or doctor. It never diagnoses, prescribes, or claims sentience.',
     },
     {
-      icon: SlidersHorizontal,
-      title: 'Bias & Dependency Mitigation',
+      icon: AgencyIcon,
+      title: 'Agency & Anti-Dependency',
       summary: 'Haven detects emotional dependency loops, confirmation bias, and cognitive over-closure, guiding your attention back to your own agency.',
     },
     {
-      icon: Lock,
+      icon: PrivacyIcon,
       title: 'Strict Privacy & Memory Vault',
       summary: 'Your conversations, reflections, and atmospheres belong strictly to your private space and are never sold or trained on.',
     },
   ];
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 p-3 sm:p-4 backdrop-blur-md flex min-h-full items-start sm:items-center justify-center py-6 sm:py-8 safe-top safe-bottom animate-appear">
-      <div className="relative w-full max-w-2xl my-auto max-h-[85vh] sm:max-h-[90vh] overflow-y-auto rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.98)] p-5 sm:p-7 md:p-9 shadow-2xl backdrop-blur-2xl">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/65 p-3 sm:p-4 backdrop-blur-sm flex min-h-full items-start sm:items-center justify-center py-6 sm:py-8 safe-top safe-bottom animate-appear">
+      <div className="relative w-full max-w-2xl my-auto max-h-[85vh] sm:max-h-[90vh] overflow-y-auto rounded-2xl border border-[#DFD6C2] bg-[#FAF7F0] p-6 sm:p-8 md:p-10 shadow-2xl">
         <button
           onClick={() => setShowHowItWorks(false)}
-          className="absolute right-4 top-4 sm:right-5 sm:top-5 rounded-full p-2 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--elevate-1))] hover:text-[hsl(var(--foreground))]"
+          className="absolute right-4 top-4 sm:right-5 sm:top-5 rounded-full p-2 text-[var(--ink-muted)] hover:bg-[#EAE3D2] hover:text-[var(--ink-primary)] transition-colors"
           data-testid="button-close-how-it-works"
         >
           <X size={18} />
         </button>
 
         <div className="flex items-center gap-3">
-          <HavenMark size={36} />
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#8B5E43] text-[#FAF6EF] shadow-xs">
+            <QuillIcon className="w-5 h-5" />
+          </span>
           <div>
-            <div className="font-mono-custom text-[9px] uppercase tracking-[.2em] text-[hsl(var(--primary))]">Core Architecture</div>
-            <h2 className="font-display text-2xl sm:text-3xl">How Haven Works</h2>
+            <div className="font-mono-custom text-[10px] uppercase tracking-[.25em] text-[#8B5E43]">Core Architecture</div>
+            <h2 className="font-editorial text-2xl sm:text-3xl text-[var(--ink-primary)]">How Haven Works</h2>
           </div>
         </div>
 
-        <p className="mt-4 text-xs sm:text-sm leading-6 text-[hsl(var(--muted-foreground))]">
+        <p className="mt-4 font-sans-clean text-xs sm:text-sm leading-relaxed text-[var(--ink-muted)]">
           Most conversational AI is engineered to agree, validate, and please. Haven is designed for epistemic clarity — a quiet sounding board that helps you notice what is present in your own thinking.
         </p>
 
         <div className="mt-6 grid gap-3 sm:gap-4 sm:grid-cols-2">
-          {commitments.map(({ icon: Icon, title, summary }, i) => (
-            <div key={i} className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.6)] p-3.5 sm:p-4">
-              <div className="flex items-center gap-2.5 text-[hsl(var(--primary))]">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[hsl(var(--primary)/.12)]">
-                  <Icon size={14} />
+          {commitments.map(({ icon: IconComp, title, summary }, i) => (
+            <div key={i} className="rounded-xl border border-[#E2D8C3] bg-[#F4EEE1] p-4 shadow-xs">
+              <div className="flex items-center gap-2.5 text-[#8B5E43]">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#E6DCB8] text-[#7A4B31] border border-[#D5CAB4]">
+                  <IconComp className="w-4 h-4" />
                 </span>
-                <h3 className="font-medium text-xs text-[hsl(var(--foreground))]">{title}</h3>
+                <h3 className="font-editorial font-medium text-sm text-[var(--ink-primary)]">{title}</h3>
               </div>
-              <p className="mt-2.5 text-[11px] sm:text-xs leading-5 text-[hsl(var(--muted-foreground))]">{summary}</p>
+              <p className="mt-2 font-sans-clean text-xs leading-relaxed text-[var(--ink-muted)]">{summary}</p>
             </div>
           ))}
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-[hsl(var(--border))] pt-4">
-          <span className="font-mono-custom text-[9px] uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]">
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-[#DFD6C2] pt-5">
+          <span className="font-mono-custom text-[10px] uppercase tracking-[.15em] text-[var(--ink-muted)]">
             Epistemic Integrity Engine · SENTINEL
           </span>
           <button
             onClick={() => setShowHowItWorks(false)}
-            className="rounded-full bg-[hsl(var(--primary))] px-5 py-2 text-xs font-semibold text-[hsl(var(--primary-foreground))]"
+            className="rounded-full bg-[#8B5E43] px-5 py-2 text-xs font-semibold text-[#FAF6EF] hover:bg-[#73462E] transition-colors shadow-xs"
             data-testid="button-dismiss-how-it-works"
           >
             I understand
@@ -711,43 +720,47 @@ function Shell({ children }: { children: ReactNode }) {
   const { user, logout, setShowAuthModal, setAuthMode, setShowHowItWorks } = useAuth();
 
   const nav = [
+    { href: '/', label: 'Home', icon: Feather },
     { href: '/space', label: 'My space', icon: MessageCircle },
     { href: '/journal', label: 'Journal', icon: BookOpen },
     { href: '/reflections', label: 'Reflections', icon: Leaf },
+    { href: '/about', label: 'About', icon: HelpCircle },
   ];
 
   return (
-    <div className="haven-noise min-h-[100dvh] bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
+    <div className="haven-noise min-h-[100dvh] bg-[var(--paper-parchment)] text-[var(--ink-primary)]">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex fixed inset-y-0 left-0 z-50 w-[268px] flex-col bg-[hsl(var(--sidebar))] px-5 py-6 text-[hsl(var(--sidebar-foreground))]">
-        <div className="flex items-center gap-3 px-2">
-          <HavenMark size={30} />
+      <aside className="hidden md:flex fixed inset-y-0 left-0 z-50 w-[268px] flex-col bg-[var(--ink-slate)] px-5 py-6 text-[#F4EEE1] border-r border-[#343D3A]">
+        <Link href="/" className="flex items-center gap-3 px-2 transition-opacity hover:opacity-90">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#8B5E43] text-[#FAF6EF] shadow-xs">
+            <Feather size={16} />
+          </span>
           <div>
-            <div className="font-display text-xl">haven</div>
-            <div className="font-mono-custom text-[9px] uppercase tracking-[.2em] text-[hsl(var(--sidebar-foreground)/.5)]">private inquiry</div>
+            <div className="font-editorial text-2xl tracking-tight text-[#FAF6EF]">haven</div>
+            <div className="font-mono-custom text-[9px] uppercase tracking-[.2em] text-[#C5BBAA]">private inquiry</div>
           </div>
-        </div>
+        </Link>
 
-        <div className="mt-8 px-2 font-mono-custom text-[9px] uppercase tracking-[.18em] text-[hsl(var(--sidebar-foreground)/.4)]">Your space</div>
+        <div className="mt-8 px-2 font-mono-custom text-[9px] uppercase tracking-[.18em] text-[#A39B8C]">Your space</div>
         <nav className="mt-3 space-y-1" aria-label="Primary navigation">
           {nav.map(({ href, label, icon: Icon }) => (
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm transition-colors ${location === href ? 'bg-[hsl(var(--sidebar-accent))] text-[hsl(var(--sidebar-foreground))] font-medium' : 'text-[hsl(var(--sidebar-foreground)/.65)] hover:bg-[hsl(var(--sidebar-accent)/.65)] hover:text-[hsl(var(--sidebar-foreground))]'}`}
+              className={`flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm transition-colors ${location === href ? 'bg-[#333D3A] text-[#FAF6EF] font-medium shadow-xs' : 'text-[#C5BBAA] hover:bg-[#2C3432] hover:text-[#FAF6EF]'}`}
               data-testid={`link-${label.toLowerCase().replace(' ', '-')}`}
             >
               <Icon size={16} strokeWidth={1.6} />
               <span>{label}</span>
-              {location === href && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[hsl(var(--sidebar-primary))]" />}
+              {location === href && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[#8B5E43]" />}
             </Link>
           ))}
         </nav>
 
-        <div className="mt-4 space-y-1 border-t border-[hsl(var(--sidebar-border))] pt-4">
+        <div className="mt-4 space-y-1 border-t border-[#343D3A] pt-4">
           <button
             onClick={() => setShowHowItWorks(true)}
-            className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs text-[hsl(var(--sidebar-foreground)/.65)] transition-colors hover:bg-[hsl(var(--sidebar-accent)/.6)] hover:text-[hsl(var(--sidebar-foreground))]"
+            className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs text-[#C5BBAA] transition-colors hover:bg-[#2C3432] hover:text-[#FAF6EF]"
             data-testid="button-how-haven-works"
           >
             <BookOpen size={15} />
@@ -755,7 +768,7 @@ function Shell({ children }: { children: ReactNode }) {
           </button>
           <Link
             href="/research"
-            className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs text-[hsl(var(--sidebar-foreground)/.65)] transition-colors hover:bg-[hsl(var(--sidebar-accent)/.6)] hover:text-[hsl(var(--sidebar-foreground))]"
+            className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs text-[#C5BBAA] transition-colors hover:bg-[#2C3432] hover:text-[#FAF6EF]"
             data-testid="link-research"
           >
             <BarChart3 size={15} />
@@ -764,21 +777,21 @@ function Shell({ children }: { children: ReactNode }) {
         </div>
 
         {/* User Profile Footer */}
-        <div className="mt-auto border-t border-[hsl(var(--sidebar-border))] pt-4">
+        <div className="mt-auto border-t border-[#343D3A] pt-4">
           {user ? (
-            <div className="rounded-xl bg-[hsl(var(--sidebar-accent)/.5)] p-3">
+            <div className="rounded-xl bg-[#2C3432] p-3 border border-[#3A4542]">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[hsl(var(--sidebar-primary)/.2)] text-[hsl(var(--sidebar-primary))] font-mono-custom text-xs font-bold">
+                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#8B5E43] text-[#FAF6EF] font-mono-custom text-xs font-bold shadow-xs">
                   {user.email.charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-xs font-medium">{user.email}</div>
-                  <div className="font-mono-custom text-[9px] text-[hsl(var(--sidebar-foreground)/.4)]">Private Profile</div>
+                  <div className="truncate text-xs font-medium text-[#FAF6EF]">{user.email}</div>
+                  <div className="font-mono-custom text-[9px] text-[#A39B8C]">Private Vault</div>
                 </div>
                 <button
                   onClick={logout}
                   title="Sign out"
-                  className="rounded p-1 text-[hsl(var(--sidebar-foreground)/.5)] hover:text-[hsl(var(--destructive))]"
+                  className="rounded p-1 text-[#A39B8C] hover:text-[#E07A5F]"
                   data-testid="button-logout"
                 >
                   <LogOut size={14} />
@@ -786,19 +799,19 @@ function Shell({ children }: { children: ReactNode }) {
               </div>
             </div>
           ) : (
-            <div className="rounded-xl border border-dashed border-[hsl(var(--sidebar-border))] p-3 text-center">
-              <div className="text-xs text-[hsl(var(--sidebar-foreground)/.7)]">Exploring in Guest Mode</div>
+            <div className="rounded-xl border border-dashed border-[#3A4542] bg-[#1E2422] p-3 text-center">
+              <div className="text-xs text-[#C5BBAA]">Exploring in Guest Mode</div>
               <div className="mt-2.5 flex gap-2">
                 <button
                   onClick={() => { setAuthMode('login'); setShowAuthModal(true); }}
-                  className="flex-1 rounded-lg bg-[hsl(var(--sidebar-primary))] py-1.5 text-[11px] font-semibold text-[hsl(var(--sidebar-primary-foreground))]"
+                  className="flex-1 rounded-lg bg-[#8B5E43] py-1.5 text-[11px] font-semibold text-[#FAF6EF] hover:bg-[#73462E] transition-colors"
                   data-testid="button-sidebar-login"
                 >
                   Sign In
                 </button>
                 <button
                   onClick={() => { setAuthMode('register'); setShowAuthModal(true); }}
-                  className="flex-1 rounded-lg border border-[hsl(var(--sidebar-border))] py-1.5 text-[11px] text-[hsl(var(--sidebar-foreground)/.8)]"
+                  className="flex-1 rounded-lg border border-[#3A4542] py-1.5 text-[11px] text-[#C5BBAA] hover:text-[#FAF6EF]"
                   data-testid="button-sidebar-register"
                 >
                   Sign Up
@@ -817,7 +830,7 @@ function Shell({ children }: { children: ReactNode }) {
       {/* Mobile Bottom Navigation Bar */}
       <nav
         aria-label="Mobile bottom navigation"
-        className="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-around border-t border-[hsl(var(--border)/.8)] bg-[hsl(var(--card)/.96)] px-2 py-2 shadow-lg backdrop-blur-xl safe-bottom md:hidden"
+        className="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-around border-t border-[#DFD6C2] bg-[#FAF7F0]/98 px-2 py-2 shadow-lg backdrop-blur-xl safe-bottom md:hidden"
       >
         {nav.map(({ href, label, icon: Icon }) => {
           const isActive = location === href;
@@ -825,10 +838,10 @@ function Shell({ children }: { children: ReactNode }) {
             <Link
               key={href}
               href={href}
-              className={`flex flex-col items-center justify-center gap-0.5 rounded-xl px-4 py-1.5 text-[11px] transition-colors ${
+              className={`flex flex-col items-center justify-center gap-0.5 rounded-xl px-3 py-1.5 text-[11px] transition-colors ${
                 isActive
-                  ? 'text-[hsl(var(--primary))] font-semibold'
-                  : 'text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]'
+                  ? 'text-[#8B5E43] font-semibold'
+                  : 'text-[var(--ink-muted)] hover:text-[var(--ink-primary)]'
               }`}
               data-testid={`mobile-nav-${label.toLowerCase().replace(' ', '-')}`}
             >
@@ -837,7 +850,7 @@ function Shell({ children }: { children: ReactNode }) {
                 {isActive && (
                   <motion.span
                     layoutId="mobileNavActiveDot"
-                    className="absolute -bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[hsl(var(--primary))]"
+                    className="absolute -bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[#8B5E43]"
                   />
                 )}
               </div>
@@ -845,14 +858,6 @@ function Shell({ children }: { children: ReactNode }) {
             </Link>
           );
         })}
-        <button
-          onClick={() => setShowHowItWorks(true)}
-          className="flex flex-col items-center justify-center gap-0.5 rounded-xl px-3 py-1.5 text-[10px] text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
-          data-testid="mobile-nav-about"
-        >
-          <HelpCircle size={18} strokeWidth={1.7} />
-          <span className="tracking-tight">About</span>
-        </button>
       </nav>
     </div>
   );
@@ -866,125 +871,11 @@ const taglineBadges = [
 
 function Threshold() {
   const { setShowHowItWorks, setShowAuthModal } = useAuth();
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const orbRotateX = useTransform(mouseY, [-0.5, 0.5], [7, -7]);
-  const orbRotateY = useTransform(mouseX, [-0.5, 0.5], [-7, 7]);
-  const handleOrbMouseMove = (event: MouseEvent<HTMLDivElement>) => {
-    const bounds = event.currentTarget.getBoundingClientRect();
-    mouseX.set((event.clientX - bounds.left) / bounds.width - 0.5);
-    mouseY.set((event.clientY - bounds.top) / bounds.height - 0.5);
-  };
-  const resetOrbTilt = () => { mouseX.set(0); mouseY.set(0); };
-
   return (
-    <div className="haven-noise relative min-h-[100dvh] overflow-hidden bg-[hsl(var(--background))] px-4 sm:px-6 md:px-10 text-[hsl(var(--foreground))] pb-12">
-      <motion.div className="pointer-events-none absolute -right-44 top-[-12%] h-[640px] w-[640px] rounded-full bg-[hsl(var(--accent)/.17)] blur-[130px]" animate={{ x: [0, 30, -10, 0], y: [0, -20, 12, 0] }} transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }} />
-      <motion.div className="pointer-events-none absolute bottom-[-22%] left-[6%] h-[540px] w-[540px] rounded-full bg-[hsl(var(--primary)/.14)] blur-[120px]" animate={{ x: [0, -25, 15, 0], y: [0, 16, -14, 0] }} transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut', delay: 2 }} />
-      <motion.div className="pointer-events-none absolute left-[36%] top-[4%] h-[320px] w-[320px] rounded-full bg-[hsl(var(--accent)/.1)] blur-[100px]" animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }} />
-      <div aria-hidden className="pointer-events-none absolute -left-[6vw] top-1/2 -z-0 -translate-y-1/2 select-none font-display text-[46vw] leading-[.7] text-[hsl(var(--primary)/.035)] md:text-[32vw]">h</div>
-
-      {/* Top Header Bar */}
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="absolute right-4 top-4 sm:right-6 sm:top-6 z-10 flex flex-wrap items-center justify-end gap-2 sm:gap-3"
-      >
-        <button
-          onClick={() => setShowHowItWorks(true)}
-          className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card)/.65)] px-3 sm:px-3.5 py-1.5 font-mono-custom text-[9px] uppercase tracking-[.16em] text-[hsl(var(--muted-foreground))] backdrop-blur hover:text-[hsl(var(--foreground))]"
-          data-testid="button-hero-how-it-works"
-        >
-          <BookOpen size={12} /> <span className="hidden xs:inline">How Haven works</span><span className="xs:hidden">Principles</span>
-        </button>
-        <button
-          onClick={() => setShowAuthModal(true)}
-          className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-[hsl(var(--primary))] px-3.5 sm:px-4 py-1.5 text-xs font-semibold text-[hsl(var(--primary-foreground))] shadow-sm"
-          data-testid="button-hero-signin"
-        >
-          <LogIn size={12} /> Sign In
-        </button>
-      </motion.div>
-
-      {/* Hero Body */}
-      <div className="relative z-[1] mx-auto grid w-full max-w-[1200px] items-center gap-10 sm:gap-14 md:grid-cols-[1.05fr_.95fr] pt-20 sm:pt-24 md:pt-28 pb-10">
-        <div>
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: 'easeOut' }} className="mb-6 sm:mb-9">
-            <HavenLogo size="lg" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="mb-5 sm:mb-7 flex items-center gap-3 font-mono-custom text-[10px] uppercase tracking-[.2em] text-[hsl(var(--primary))]">
-            <span className="h-px w-9 bg-[hsl(var(--primary))]" />Threshold 01
-          </motion.div>
-          <h1 className="max-w-[700px] font-display text-[clamp(2.6rem,7vw,6.5rem)] leading-[.92] sm:leading-[.88] tracking-[-.035em]">
-            Notice what<br /><em>moves</em> inside.
-          </h1>
-          <p className="mt-6 sm:mt-9 max-w-[480px] text-sm sm:text-[15px] leading-relaxed text-[hsl(var(--muted-foreground))]">
-            Haven is a space for examining your own thinking. Not a therapist. Not a mirror that agrees. A careful AI presence that will tell you when it is uncertain.
-          </p>
-          <motion.div
-            className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4 sm:gap-5"
-            initial="hidden"
-            animate="show"
-            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 0.4 } } }}
-          >
-            <motion.div variants={fadeUp} whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }} className="relative inline-block w-full xs:w-auto">
-              <motion.span
-                className="absolute inset-0 -z-10 rounded-full bg-[hsl(var(--accent)/.45)] blur-xl"
-                animate={{ opacity: [0.35, 0.6, 0.35], scale: [1, 1.16, 1] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              <Link href="/space" className="group flex xs:inline-flex items-center justify-center gap-3 rounded-full bg-[hsl(var(--primary))] px-6 py-3.5 text-sm font-semibold text-[hsl(var(--primary-foreground))] shadow-[var(--shadow-md)]" data-testid="link-enter-space">
-                Enter your space <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-              </Link>
-            </motion.div>
-            <button
-              onClick={() => setShowHowItWorks(true)}
-              className="font-mono-custom text-[10px] uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))] underline underline-offset-4 hover:text-[hsl(var(--foreground))]"
-            >
-              Read the commitments
-            </button>
-          </motion.div>
-        </div>
-
-        {/* Breathing Orb */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
-          onMouseMove={handleOrbMouseMove}
-          onMouseLeave={resetOrbTilt}
-          style={{ perspective: 900 }}
-          className="relative mx-auto h-[260px] sm:h-[340px] md:h-[440px] w-full max-w-[380px] md:max-w-[420px]"
-        >
-          <motion.div style={{ rotateX: orbRotateX, rotateY: orbRotateY }} className="h-full w-full">
-            <BreathingOrb />
-          </motion.div>
-        </motion.div>
-      </div>
-
-      {/* Feature Badges */}
-      <motion.div
-        className="relative z-[1] mx-auto flex w-full max-w-[1200px] flex-wrap items-center gap-2.5 sm:gap-3 pb-8"
-        initial="hidden"
-        animate="show"
-        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.7 } } }}
-      >
-        {taglineBadges.map(({ icon: Icon, label }) => (
-          <motion.div
-            key={label}
-            variants={fadeUp}
-            whileHover={{ y: -3 }}
-            className="flex items-center gap-2 rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card)/.5)] px-3.5 py-2 text-[10px] sm:text-[11px] text-[hsl(var(--muted-foreground))] backdrop-blur transition-colors hover:border-[hsl(var(--primary)/.4)] hover:text-[hsl(var(--primary))]"
-          >
-            <span className="flex h-5 w-5 sm:h-6 sm:w-6 shrink-0 items-center justify-center rounded-full bg-[hsl(var(--primary)/.1)] text-[hsl(var(--primary))]">
-              <Icon size={12} />
-            </span>
-            {label}
-          </motion.div>
-        ))}
-      </motion.div>
-    </div>
+    <HomePage
+      onOpenHowItWorks={() => setShowHowItWorks(true)}
+      onOpenAuth={() => setShowAuthModal(true)}
+    />
   );
 }
 
@@ -1053,6 +944,14 @@ function SpacePage() {
       });
     });
   }, [detail.data?.messages?.length, isSending, streamingContent, currentId]);
+
+  useEffect(() => {
+    const pending = sessionStorage.getItem('haven_pending_prompt');
+    if (pending) {
+      sessionStorage.removeItem('haven_pending_prompt');
+      create(pending);
+    }
+  }, []);
 
   const create = (initialPrompt?: string, customTitle?: string) => {
     const starter = initialPrompt ? reflectiveStarters.find((s) => s.prompt === initialPrompt) : null;
@@ -1796,144 +1695,10 @@ function SpacePage() {
 }
 
 function ReflectionsPage() {
-  const reflections = useGetReflections();
-  const environment = useGetEnvironment();
-  const data = reflections.data;
-  const env = environment.data;
-  const [copied, setCopied] = useState(false);
-
-  const handleExportArchive = () => {
-    if (!data) return;
-    let md = `# Haven Reflections Archive\n`;
-    md += `*Exported on ${new Date().toLocaleString()} | Active Atmosphere: ${modeLabel(env?.mode)}*\n\n`;
-    md += `## Recurring Topics\n${(data.topics || []).map((t) => `- ${t}`).join('\n')}\n\n`;
-    md += `## Considered Perspectives\n${(data.perspectives || []).map((p) => `- ${p}`).join('\n')}\n\n`;
-    md += `## Open Questions\n${(data.questions || []).map((q) => `- ${q}`).join('\n')}\n\n`;
-    md += `## Timeline Milestones\n${(data.timeline || []).map((tm: any) => `### ${tm.label}\n${tm.detail}`).join('\n\n')}\n`;
-
-    navigator.clipboard?.writeText(md).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 3000);
-    });
-
-    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `haven-reflections-archive.md`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
   return (
     <Shell>
-      <div className="mx-auto max-w-[1180px] px-3 sm:px-6 md:px-12 py-5 sm:py-6 md:py-8">
-        {/* Top Header Bar matching JournalPage & SpacePage */}
-        <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 border-b border-[hsl(var(--border))] pb-4 sm:pb-6">
-          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-            <span className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-2xl bg-[hsl(var(--primary)/.12)] text-[hsl(var(--primary))] shadow-sm">
-              <Leaf size={18} />
-            </span>
-            <div className="min-w-0">
-              <div className="font-mono-custom text-[9px] sm:text-[10px] uppercase tracking-[.2em] text-[hsl(var(--muted-foreground))] truncate">Haven / Long View</div>
-              <h1 className="font-display text-lg sm:text-2xl md:text-3xl text-[hsl(var(--foreground))] truncate">Reflections</h1>
-            </div>
-          </div>
-          <div className="flex items-center gap-2.5 shrink-0">
-            <button
-              onClick={handleExportArchive}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card)/.8)] px-3 py-1.5 text-xs font-semibold text-[hsl(var(--foreground))] shadow-sm backdrop-blur hover:border-[hsl(var(--primary)/.4)] transition-transform active:scale-95"
-              data-testid="button-export-reflections-archive"
-            >
-              {copied ? <Check size={13} className="text-[hsl(var(--primary))]" /> : <Download size={13} />}
-              <span className="hidden sm:inline">{copied ? 'Copied' : 'Export Archive (.md)'}</span>
-              <span className="sm:hidden">Export (.md)</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Subtitle description */}
-        <p className="mt-3 text-xs sm:text-sm leading-5 sm:leading-6 text-[hsl(var(--muted-foreground))] max-w-2xl">
-          What returns is not always a pattern. Sometimes it is simply a question that stayed open.
-        </p>
-
-        {reflections.isLoading ? (
-          <div className="grid gap-4 sm:gap-5 py-8 sm:py-12 md:grid-cols-3">
-            <div className="h-48 sm:h-52 animate-pulse rounded-2xl bg-[hsl(var(--muted))]" />
-            <div className="h-48 sm:h-52 animate-pulse rounded-2xl bg-[hsl(var(--muted))]" />
-            <div className="h-48 sm:h-52 animate-pulse rounded-2xl bg-[hsl(var(--muted))]" />
-          </div>
-        ) : reflections.isError ? (
-          <div className="my-8 sm:my-12 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-[hsl(var(--destructive)/.3)] bg-[hsl(var(--destructive)/.05)] p-5 sm:p-6 text-sm" data-testid="status-reflections-error">
-            <span>Reflections are unavailable right now.</span>
-            <button onClick={() => reflections.refetch()} className="inline-flex items-center gap-2 font-semibold" data-testid="button-retry-reflections">
-              <RefreshCcw size={14} /> Retry
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="grid gap-4 sm:gap-5 py-6 sm:py-10 md:grid-cols-3">
-              <ReflectionCard title="Recurring topics" eyebrow="Not conclusions" icon={<Leaf size={17} />} items={data?.topics ?? []} empty="No recurring topics yet. Keep having conversations." />
-              <ReflectionCard title="Considered perspectives" eyebrow="Held lightly" icon={<Search size={17} />} items={data?.perspectives ?? []} empty="Perspectives will gather as you return." />
-              <ReflectionCard title="Returned questions" eyebrow="Still open" icon={<CircleHelp size={17} />} items={data?.questions ?? []} empty="Open questions will appear here." />
-            </div>
-            <section className="relative mt-2 overflow-hidden rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.62)] p-5 sm:p-6 md:p-9">
-              <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-[hsl(var(--accent)/.12)] blur-3xl" />
-              <div className="relative flex items-center justify-between">
-                <div>
-                  <div className="font-mono-custom text-[10px] uppercase tracking-[.17em] text-[hsl(var(--muted-foreground))]">Conversation trail</div>
-                  <h2 className="mt-1 sm:mt-2 font-display text-2xl sm:text-3xl">The shape of returning</h2>
-                </div>
-                <FileText size={20} className="text-[hsl(var(--primary)/.65)]" />
-              </div>
-              <div className="relative mt-8 sm:mt-10">
-                {data?.timeline?.length ? (
-                  <div className="space-y-0">
-                    {data.timeline.map((point, index) => (
-                      <div key={`${point.label}-${index}`} className="group flex gap-3 sm:gap-5">
-                        <div className="flex w-5 flex-col items-center">
-                          <span className="mt-1.5 h-3 w-3 rounded-full border-2 border-[hsl(var(--primary))] bg-[hsl(var(--card))]" />
-                          {index < (data.timeline.length - 1) && <span className="w-px flex-1 bg-[hsl(var(--border))]" />}
-                        </div>
-                        <div className="pb-6 sm:pb-8">
-                          <div className="font-mono-custom text-[10px] uppercase tracking-[.1em] text-[hsl(var(--primary))]">{point.label}</div>
-                          <p className="mt-1.5 sm:mt-2 max-w-2xl text-xs sm:text-sm leading-5 sm:leading-6 text-[hsl(var(--muted-foreground))]">{point.detail}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="border-t border-dashed border-[hsl(var(--border))] pt-7 text-xs sm:text-sm text-[hsl(var(--muted-foreground))]" data-testid="empty-timeline">Your timeline will take shape through repeated attention.</div>
-                )}
-              </div>
-            </section>
-          </>
-        )}
-      </div>
+      <ReflectionsPageComponent />
     </Shell>
-  );
-}
-
-function ReflectionCard({ title, eyebrow, icon, items, empty }: { title: string; eyebrow: string; icon: ReactNode; items: string[]; empty: string }) {
-  return (
-    <article className="group rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.64)] p-5 sm:p-6 transition-transform hover:-translate-y-1">
-      <div className="flex items-center justify-between text-[hsl(var(--primary))]">
-        <span>{icon}</span>
-        <span className="font-mono-custom text-[9px] uppercase tracking-[.14em] text-[hsl(var(--muted-foreground))]">{eyebrow}</span>
-      </div>
-      <h2 className="mt-6 sm:mt-8 font-display text-2xl sm:text-3xl">{title}</h2>
-      {items.length ? (
-        <ul className="mt-4 sm:mt-6 space-y-2.5 sm:space-y-3">
-          {items.map((item, index) => (
-            <li key={`${item}-${index}`} className="border-t border-[hsl(var(--border)/.7)] pt-2.5 sm:pt-3 text-xs sm:text-sm leading-5 text-[hsl(var(--foreground)/.75)]" data-testid={`text-reflection-item-${index}`}>
-              {item}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="mt-4 sm:mt-6 border-t border-dashed border-[hsl(var(--border))] pt-3 sm:pt-4 text-xs leading-5 text-[hsl(var(--muted-foreground))]" data-testid={`empty-${title.toLowerCase().replace(' ', '-')}`}>{empty}</p>
-      )}
-    </article>
   );
 }
 
@@ -2995,6 +2760,14 @@ function ResearchPage() {
   );
 }
 
+function AboutPageRoute() {
+  return (
+    <Shell>
+      <AboutPage />
+    </Shell>
+  );
+}
+
 function Router() {
   const [location] = useLocation();
   return (
@@ -3004,6 +2777,7 @@ function Router() {
         <Route path="/space" component={SpacePage} />
         <Route path="/journal" component={JournalPage} />
         <Route path="/reflections" component={ReflectionsPage} />
+        <Route path="/about" component={AboutPageRoute} />
         <Route path="/research" component={ResearchPage} />
         <Route component={NotFound} />
       </Switch>
