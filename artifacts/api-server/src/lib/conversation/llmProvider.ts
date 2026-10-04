@@ -18,6 +18,8 @@ export interface GenerateTextOptions {
   model?: string;
   maxTokens?: number;
   temperature?: number;
+  presencePenalty?: number;
+  frequencyPenalty?: number;
   timeoutMs?: number;
   schemaName?: string;
 }
@@ -139,6 +141,8 @@ export class NvidiaProvider implements LLMProvider {
           messages: options.messages,
           max_tokens: options.maxTokens ?? 700,
           temperature: options.temperature ?? 0.7,
+          presence_penalty: options.presencePenalty ?? 0.3,
+          frequency_penalty: options.frequencyPenalty ?? 0.2,
         }),
         signal: controller.signal,
       });
@@ -190,6 +194,8 @@ export class NvidiaProvider implements LLMProvider {
           messages: options.messages,
           max_tokens: options.maxTokens ?? 700,
           temperature: options.temperature ?? 0.7,
+          presence_penalty: options.presencePenalty ?? 0.3,
+          frequency_penalty: options.frequencyPenalty ?? 0.2,
           stream: true,
         }),
         signal: controller.signal,
@@ -314,6 +320,8 @@ export class OpenAIProvider implements LLMProvider {
           messages: options.messages,
           max_completion_tokens: options.maxTokens ?? 700,
           temperature: options.temperature ?? 0.7,
+          presence_penalty: options.presencePenalty ?? 0.3,
+          frequency_penalty: options.frequencyPenalty ?? 0.2,
         }),
         signal: controller.signal,
       });
@@ -367,6 +375,8 @@ export class OpenAIProvider implements LLMProvider {
           messages: options.messages,
           max_completion_tokens: options.maxTokens ?? 700,
           temperature: options.temperature ?? 0.7,
+          presence_penalty: options.presencePenalty ?? 0.3,
+          frequency_penalty: options.frequencyPenalty ?? 0.2,
           stream: true,
         }),
         signal: controller.signal,

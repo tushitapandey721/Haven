@@ -754,8 +754,18 @@ Rewrite the candidate response cleanly addressing all required changes while ful
       }
     }
 
-    // 16. General fallback
-    return generateMockResponse(userMsg, safety);
+    // 16. General fallback with repetition prevention
+    const rawResponse = generateMockResponse(userMsg, safety);
+    const recent = context.recentAssistantResponses || [];
+
+    if (recent.some((r) => r.trim().toLowerCase() === rawResponse.trim().toLowerCase())) {
+      if (userMsg.length > 3 && !/^(hi|hello|hey)$/i.test(userMsg)) {
+        return `I hear you regarding "${userMsg}". What specific aspect would you like to reflect on or explore next?`;
+      }
+      return "I'm listening. Where would you like to take this line of thought next?";
+    }
+
+    return rawResponse;
   }
 }
 
